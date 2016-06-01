@@ -1,0 +1,14 @@
+{
+  "name": "issue-token",
+  "description": "issue temporary auth tokens",
+  "version": "0.0.1",
+  "main": "./module.js",
+  "author": "douglas lauer <taky@taky.com>",
+  "repository": "douglauer/issue-token",
+  "keywords": [
+    "taky"
+  ],
+  "dependencies": {
+    "wegweg": "^0.1.0"
+  }
+}
