@@ -82,7 +82,9 @@
       if (opt.expires_secs == null) {
         opt.expires_secs = _.seconds('5 minutes');
       }
-      token = _.uuid() + _.time();
+      if (opt.value == null) {
+        opt.value = _.time();
+      }
       token = _.random_string(128);
       key = this.opt.redis_key + ':' + token;
       (function(_this) {
@@ -92,7 +94,7 @@
             filename: "/Users/douglaslauer/www/issue-token/module.iced",
             funcname: "Tokens.issue"
           });
-          _this.redis.setex(key, opt.expires_secs, token, __iced_deferrals.defer({
+          _this.redis.setex(key, opt.expires_secs, opt.value, __iced_deferrals.defer({
             assign_fn: (function() {
               return function() {
                 return e = arguments[0];
@@ -162,7 +164,7 @@
             if (e) {
               return cb(e);
             }
-            return cb(null, true);
+            return cb(null, r);
           });
         };
       })(this));
@@ -182,7 +184,8 @@
           filename: "/Users/douglaslauer/www/issue-token/module.iced"
         });
         t.issue({
-          expires_secs: 60
+          expires_secs: 60,
+          value: 'hello_world'
         }, __iced_deferrals.defer({
           assign_fn: (function() {
             return function() {

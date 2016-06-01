@@ -19,12 +19,12 @@ module.exports = class Tokens
       opt = {}
 
     opt.expires_secs ?= _.seconds('5 minutes')
+    opt.value ?= _.time()
 
-    token = _.uuid() + _.time()
     token = _.random_string(128)
 
     key = @opt.redis_key + ':' + token
-    await @redis.setex key, opt.expires_secs, token, defer e
+    await @redis.setex key, opt.expires_secs, opt.value, defer e
     if e then return cb e
 
     return cb null, token
@@ -40,7 +40,7 @@ module.exports = class Tokens
     await @redis.del key, defer e
     if e then return cb e
 
-    return cb null, yes
+    return cb null, r
 
 ##
 if !module.parent
@@ -48,7 +48,7 @@ if !module.parent
 
   t = new Tokens
   log /ISSUE/
-  await t.issue {expires_secs:60}, defer e,token
+  await t.issue {expires_secs:60,value:'hello_world'}, defer e,token
   log e
   log token
   log /REDEEM/
